@@ -1,10 +1,10 @@
-Promises Example: from Initiative to Tasks
+Promises Example: from Initiatives to Tasks
 =========================
 
 ## Overview
 ![](pic1.png)
 
-This app example is vailable AS IS. It is NOT supported by Rally.
+This app example is available AS IS. It is NOT supported by Rally.
 
 ## License
 
