@@ -2,7 +2,9 @@ Promises Example: from Initiatives to Tasks
 =========================
 
 ## Overview
-![](pic1.png)
+![](pic2.png)
+
+Note the global scope settings. Apps by default assume global scope when running inside Rally. In this example if Initiatives are located in the current project's parent project, the app will not return expected data unless the global scoping is set to include items from parent projects
 
 This app example is available AS IS. It is NOT supported by Rally.
 

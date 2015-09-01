@@ -21,16 +21,17 @@ Ext.define('CustomApp', {
             scope: this
         }).then({
             success: function(results) {
-                console.log('great success!');
+                //console.log('great success!');
                 results = _.flatten(results);
                 _.each(results, function(result){
                     console.log(result.data.FormattedID, 'Estimate: ', result.data.Estimate, 'WorkProduct:', result.data.WorkProduct.FormattedID );
                 });
-                
+                this.makeGrid(results);
             },
             failure: function(error) {
                 console.log('oh, noes!');
-            }
+            },
+            scope: this
         });
     },
 
@@ -83,5 +84,44 @@ Ext.define('CustomApp', {
             }
         });
         return Deft.Promise.all(promises);
+    },
+    makeGrid:function(tasks){
+        var data = [];
+        _.each(tasks, function(task){
+            data.push(task.data);
+        });
+        
+        _.each(data, function(record){
+            record.Story = record.WorkProduct.FormattedID + " " + record.WorkProduct.Name;
+        });
+        
+        this.add({
+            xtype: 'rallygrid',
+            showPagingToolbar: true,
+            showRowActionsColumn: true,
+            editable: false,
+            store: Ext.create('Rally.data.custom.Store', {
+                data: data,
+                groupField: 'Story'
+            }),
+            features: [{ftype:'groupingsummary'}],
+            columnCfgs: [
+                {
+                    xtype: 'templatecolumn',text: 'ID',dataIndex: 'FormattedID',width: 100,
+                    tpl: Ext.create('Rally.ui.renderer.template.FormattedIDTemplate'),
+                    summaryRenderer: function() {
+                        return "Totals"; 
+                    }
+                },
+                {
+                    text: 'Name',dataIndex: 'Name'
+                },
+                {
+                    text: 'Estimate',dataIndex: 'Estimate',
+                    summaryType: 'sum'
+                }
+            ]
+        });
+        
     }
 });
