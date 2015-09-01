@@ -4,8 +4,7 @@ Ext.define('CustomApp', {
     launch: function() {
         var initiatives = Ext.create('Rally.data.wsapi.Store', {
             model: 'PortfolioItem/Initiative',
-            fetch: ['Children'],
-            project: '/project/33802176229'
+            fetch: ['Children']
         });
         initiatives.load().then({
             success: this.loadFeatures,
@@ -18,6 +17,7 @@ Ext.define('CustomApp', {
             scope: this
         }).then({                          
             success: this.loadTasks,
+            failure: this.onFailure,
             scope: this
         }).then({
             success: function(results) {
@@ -25,11 +25,11 @@ Ext.define('CustomApp', {
                 results = _.flatten(results);
                 _.each(results, function(result){
                     console.log(result.data.FormattedID, 'Estimate: ', result.data.Estimate, 'WorkProduct:', result.data.WorkProduct.FormattedID );
-                })
+                });
                 
             },
             failure: function(error) {
-                //oh noes!
+                console.log('oh, noes!');
             }
         });
     },
