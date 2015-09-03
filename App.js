@@ -24,7 +24,7 @@ Ext.define('CustomApp', {
                 //console.log('great success!');
                 results = _.flatten(results);
                 _.each(results, function(result){
-                    console.log(result.data.FormattedID, 'Estimate: ', result.data.Estimate, 'WorkProduct:', result.data.WorkProduct.FormattedID );
+                    console.log(result.data.FormattedID, 'Estimate: ', result.data.Estimate, 'WorkProduct:', result.data.WorkProduct.FormattedID, 'TimeSpent', result.data.TimeSpent );
                 });
                 this.makeGrid(results);
             },
@@ -76,7 +76,7 @@ Ext.define('CustomApp', {
         _.each(stories, function(story) {
             var tasks = story.get('Tasks');
             if(tasks.Count > 0) {
-                tasks.store = story.getCollection('Tasks', {fetch: ['Name','FormattedID','Workproduct','Estimate']});
+                tasks.store = story.getCollection('Tasks', {fetch: ['Name','FormattedID','Workproduct','Estimate','TimeSpent']});
                 promises.push(tasks.store.load());
             }
             else{
@@ -115,6 +115,10 @@ Ext.define('CustomApp', {
                 },
                 {
                     text: 'Name',dataIndex: 'Name'
+                },
+                {
+                    text: 'TimeSpent',dataIndex: 'TimeSpent',
+                    summaryType: 'sum'
                 },
                 {
                     text: 'Estimate',dataIndex: 'Estimate',
